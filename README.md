@@ -37,7 +37,7 @@
 1. 雙擊執行 `WeightToExcel.exe`。
 2. 若為第一次啟動，系統會列出偵測到的 COM Port，並請您確認：
     * **COM Port**：選擇連接天平的端口（例如 COM1）。
-    * **下一格游標移動方向**：輸入完畢後要「往下跳 (down)」或「往右跳 (right)」。
+    * **下一格游標移動方向**：輸入完畢後要「往下 (down)或右(right)或上 (up)或左 (left)或左下 (downleft)或右下 (downright)」。
     * 其餘參數（Baud Rate 等）若無特殊需求，直接按 **Enter** 使用預設值即可。
 
 ### 3. 日常稱重流程

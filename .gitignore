@@ -45,3 +45,6 @@
 
 # Local config
 config.json
+
+# Executables
+*.exe

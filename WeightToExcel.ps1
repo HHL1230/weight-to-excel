@@ -140,6 +140,7 @@ $mySessionId = [System.Diagnostics.Process]::GetCurrentProcess().SessionId
 # === 初始化 ===
 $host.UI.RawUI.WindowTitle = "Scale Monitor [$($cfg.comPort)]"
 $counter = 0
+$autoExit = $false
 
 $port = New-Object System.IO.Ports.SerialPort $cfg.comPort, $cfg.baudRate, $cfg.parity, $cfg.dataBits, $cfg.stopBits
 $port.DtrEnable = $true
@@ -179,6 +180,7 @@ try {
         if ((Get-Date) - $lastActionTime -gt [TimeSpan]::FromMinutes($cfg.idleTimeoutMinutes)) {
             Write-Host ""
             Write-Host "[$(Get-Date -Format 'HH:mm:ss')] Idle timeout ($($cfg.idleTimeoutMinutes) min). Auto-disconnecting..." -ForegroundColor Yellow
+            $autoExit = $true
             break
         }
         
@@ -187,6 +189,7 @@ try {
         if ($activeSessionId -ne 0xFFFFFFFF -and $activeSessionId -ne $mySessionId) {
             Write-Host ""
             Write-Host "[$(Get-Date -Format 'HH:mm:ss')] 系統偵測到使用者已切換帳號 (Session Switch)，自動釋放 $($cfg.comPort) 並退出程式..." -ForegroundColor Magenta
+            $autoExit = $true
             break
         }
 
@@ -249,6 +252,9 @@ finally {
     Write-Host ""
     Write-Host "[$(Get-Date -Format 'HH:mm:ss')] Port closed. Total sent: $counter" -ForegroundColor Cyan
     Write-Host "==========================================" -ForegroundColor Cyan
-    Write-Host "Press any key to close..." -ForegroundColor Gray
-    $null = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+    
+    if (-not $autoExit) {
+        Write-Host "Press any key to close..." -ForegroundColor Gray
+        $null = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+    }
 }

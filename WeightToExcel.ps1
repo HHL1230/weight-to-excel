@@ -126,18 +126,50 @@ function Get-ExcelInstance {
     }
 }
 
-# === 取得當前主控台連線的 SessionID API ===
+# === Windows API 定義 (Session 偵測與字型設定) ===
 Add-Type -TypeDefinition @"
 using System;
 using System.Runtime.InteropServices;
-public class WTS {
-    [DllImport("kernel32.dll")]
+
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+public struct CONSOLE_FONT_INFO_EX {
+    public uint cbSize;
+    public uint nFont;
+    public short dwFontSizeX;
+    public short dwFontSizeY;
+    public int FontFamily;
+    public int FontWeight;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+    public string FaceName;
+}
+
+public class WinAPI {
+    [DllImport("kernel32.dll", SetLastError = true)]
     public static extern uint WTSGetActiveConsoleSessionId();
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    public static extern bool SetCurrentConsoleFontEx(IntPtr hConsoleOutput, bool bMaximumWindow, ref CONSOLE_FONT_INFO_EX lpConsoleCurrentFontEx);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    public static extern IntPtr GetStdHandle(int nStdHandle);
 }
 "@
 $mySessionId = [System.Diagnostics.Process]::GetCurrentProcess().SessionId
 
 # === 初始化 ===
+$OutputEncoding = [System.Text.Encoding]::UTF8
+[Console]::InputEncoding = [System.Text.Encoding]::UTF8
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+chcp 65001 | Out-Null
+
+$hOutput = [WinAPI]::GetStdHandle(-11) # STD_OUTPUT_HANDLE
+$fontInfo = New-Object CONSOLE_FONT_INFO_EX
+$fontInfo.cbSize = [System.Runtime.InteropServices.Marshal]::SizeOf($fontInfo)
+$fontInfo.FaceName = "Consolas"
+$fontInfo.dwFontSizeY = 18
+$fontInfo.FontWeight = 400
+[WinAPI]::SetCurrentConsoleFontEx($hOutput, $false, [ref]$fontInfo) | Out-Null
+
 $host.UI.RawUI.WindowTitle = "Scale Monitor [$($cfg.comPort)]"
 $counter = 0
 $autoExit = $false
@@ -184,7 +216,7 @@ try {
             break
         }
         
-        $activeSessionId = [WTS]::WTSGetActiveConsoleSessionId()
+        $activeSessionId = [WinAPI]::WTSGetActiveConsoleSessionId()
         # 當返回的不是 0xFFFFFFFF 且與當下使用者的 ID 不符合時，表示有另一個使用者接管了這個本機操作畫面或切換了帳號
         if ($activeSessionId -ne 0xFFFFFFFF -and $activeSessionId -ne $mySessionId) {
             Write-Host ""

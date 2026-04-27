@@ -1,8 +1,17 @@
-# 🚀 天平數據傳輸程式 (Scale Monitor) v1.0.0
+# 🚀 天平數據傳輸程式 (Scale Monitor) v1.0.1
 
-[![Download v1.0.0](https://img.shields.io/badge/Download-ScaleMonitor.exe-brightgreen?style=for-the-badge&logo=windows)](https://github.com/HHL1230/scale-monitor/releases/latest/download/ScaleMonitor.exe)
+[![Download v1.0.1](https://img.shields.io/badge/Download-ScaleMonitor.exe-brightgreen?style=for-the-badge&logo=windows)](https://github.com/HHL1230/scale-monitor/releases/latest/download/ScaleMonitor.exe)
 
-本程式是專為Mettler Toledo天平之RS232介面設計的傳輸工具。透過即時捕捉介面資料與 **Excel 直接寫入技術** (COM API)，將天平數值填入儲存格，同時這種方式能解決傳統模擬鍵盤輸入（模擬 HID）時「輸入法干擾」及「視窗焦點被搶走」的問題。
+本程式是專為Mettler Toledo與OHAUS等廠牌天平之RS232介面設計的傳輸工具。透過即時捕捉介面資料與 **Excel 直接寫入技術** (COM API)，將天平數值填入儲存格，同時這種方式能解決傳統模擬鍵盤輸入（模擬 HID）時「輸入法干擾」及「視窗焦點被搶走」的問題。
+
+---
+
+## ✨ v1.0.1 更新說明
+
+為解決部分廠牌天平 (例如 OHAUS/AX224) 單次按下傳輸按鈕時，會連續送出多筆數據（包含毛重、淨重、皮重等），導致 Excel 被連續輸入多筆冗餘資料的問題，v1.0.1 版本加入了 **「防連發 (Debounce)」機制**。
+
+- **防連發機制**：預設為 1 秒。當接收到第一筆有效的重量數據後，程式會在接下來的 1 秒鐘內，過濾同一台天平送出的附屬數據，保證只輸入正確的主重量。
+- **動態相容設定檔**：若讀取舊版的 `config.json`，會自動將過濾時間帶入 1 秒，亦可透過啟動時按 `R` 重新設定。
 
 ---
 
@@ -31,6 +40,7 @@
     - `right` (右) / `left` (左)
     - `downright` (右下對角線) / `downleft` (左下對角線)
 7. **閒置斷線時間**：預設為 `30` 分鐘。時間到後程式會**自動關閉視窗並釋放連線**。
+8. **防連發過濾時間 (秒)**：預設為 `1` 秒。
 
 以上參數會儲存在新生成的`config.json`檔案中並放在桌面，下次啟動時會自動讀取。
 若程式沒找到該檔案，會重新做初始化設定。
@@ -48,6 +58,7 @@
 - **輸入法避讓**：完全不受中/英文輸入法狀態影響，解決數據變成注音符號的問題。
 - **指定方向**：稱重完畢後，Excel 選取格會自動根據設定的方向跳往下一格。
 - **智慧斷線**：設定之閒置時間到，或同電腦由其他帳號登入時，會自動關閉程式，避免佔用COM Port。
+- **防連發過濾**：自動過濾天平單次操作傳送的冗餘資料。
 
 ---
 

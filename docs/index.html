@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scale Monitor - 專業天平數據傳輸解決方案</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% -20%, #1e40af, transparent),
+                        radial-gradient(circle at 0% 100%, #1e1b4b, transparent);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 0 2rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: rgba(0, 210, 255, 0.1);
+            color: var(--primary);
+            padding: 0.25rem 1rem;
+            border-radius: 99px;
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .hero-text {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+
+        .download-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 5rem;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 10px 25px -5px rgba(58, 123, 213, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-download:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 35px -10px rgba(58, 123, 213, 0.6);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0, 210, 255, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .changelog {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .changelog h2 {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .changelog-item {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .changelog-item::before {
+            content: "•";
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 2.5rem; }
+            .hero-text { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg"></div>
+    
+    <div class="container">
+        <header>
+            <h1>Scale Monitor</h1>
+            <div class="version-badge">Version 1.0.1 - Stable</div>
+            <p class="hero-text">
+                專為實驗室設計的自動化工具。透過 RS232 直連技術，將天平重量數據精準、穩定地導入 Excel，告別手動輸入與輸入法干擾。
+            </p>
+        </header>
+
+        <section class="download-section">
+            <a href="https://github.com/HHL1230/scale-monitor/releases/latest/download/ScaleMonitor.exe" class="btn-download">
+                <span>🚀 立即下載 ScaleMonitor.exe</span>
+            </a>
+            <p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.85rem;">支援 Windows 10/11 & Excel 全版本</p>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <span class="feature-icon">⌨️</span>
+                <h3>輸入法避讓技術</h3>
+                <p>完全不受中/英文輸入法影響，解決傳統模擬鍵盤時數據變成注音符號或亂碼的問題。</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🛡️</span>
+                <h3>防連發過濾 (New)</h3>
+                <p>自動過濾 OHAUS 等天平單次操作傳送的冗餘資料（如毛重、皮重），保證數據唯一性。</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">📊</span>
+                <h3>背景寫入技術</h3>
+                <p>即使 Excel 視窗不在焦點（正在處理其他工作），數據依然能準確寫入指定儲存格。</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">⚡</span>
+                <h3>智慧自動化</h3>
+                <p>支援多方向游標移動、智慧閒置斷線，完美契合 LIMS 系統作業節奏。</p>
+            </div>
+        </section>
+
+        <section class="changelog">
+            <h2>✨ v1.0.1 更新日誌</h2>
+            <div class="changelog-item">新增「防連發 (Debounce)」機制，支援 OHAUS AX224 等廠牌。</div>
+            <div class="changelog-item">設定精靈加入自訂過濾時間（預設 1.0 秒）。</div>
+            <div class="changelog-item">啟動畫面加入版本號顯示，方便確認版本。</div>
+            <div class="changelog-item">優化與 Mettler Toledo 天平的相容性。</div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Shawn Lee @ CCL-KHH. All Rights Reserved.</p>
+            <p>技術支援: shawn.lee@sgs.com</p>
+        </footer>
+    </div>
+</body>
+</html>
